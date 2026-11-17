@@ -49,7 +49,9 @@ runs:
         PYTHON_VERSION: ${{ inputs.python-version }}
       run: |
         PYTHON_VERSION_UNDERSCORE=${PYTHON_VERSION//./_}
-        pip install -r setup/requirements_${PYTHON_VERSION_UNDERSCORE}_lock.txt
+        python -m pip install -r setup/requirements_${PYTHON_VERSION_UNDERSCORE}_lock.txt
+        python -m pip install --no-deps ./setup
+        python -m pip check
     - name: Run Python unit tests
       shell: bash
       run: |

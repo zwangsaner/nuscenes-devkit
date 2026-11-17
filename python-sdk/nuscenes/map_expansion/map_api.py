@@ -9,7 +9,6 @@ import random
 from typing import Dict, List, Tuple, Optional, Union
 
 import cv2
-import descartes
 import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
 import numpy as np
@@ -21,6 +20,7 @@ from mpl_toolkits.axes_grid1.inset_locator import mark_inset
 from pyquaternion import Quaternion
 from shapely import affinity
 from shapely.geometry import Polygon, MultiPolygon, LineString, Point, box
+from shapely.plotting import patch_from_polygon
 from tqdm import tqdm
 
 from nuscenes.map_expansion.arcline_path_utils import discretize_lane, ArcLinePath
@@ -1186,8 +1186,8 @@ class NuScenesMapExplorer:
                         continue
 
                     label = layer_name
-                    ax.add_patch(descartes.PolygonPatch(polygon_proj, fc=self.color_map[layer_name], alpha=alpha,
-                                                        label=label))
+                    ax.add_patch(patch_from_polygon(polygon_proj, fc=self.color_map[layer_name], alpha=alpha,
+                                                   label=label))
 
         # Display the image.
         plt.axis('off')
@@ -1719,8 +1719,8 @@ class NuScenesMapExplorer:
                         first_time = False
                     else:
                         label = None
-                    ax.add_patch(descartes.PolygonPatch(polygon, fc=self.color_map[layer_name], alpha=alpha,
-                                                        label=label))
+                    ax.add_patch(patch_from_polygon(polygon, fc=self.color_map[layer_name], alpha=alpha,
+                                                   label=label))
         else:
             for record in records:
                 polygon = self.map_api.extract_polygon(record['polygon_token'])
@@ -1731,8 +1731,8 @@ class NuScenesMapExplorer:
                 else:
                     label = None
 
-                ax.add_patch(descartes.PolygonPatch(polygon, fc=self.color_map[layer_name], alpha=alpha,
-                                                    label=label))
+                ax.add_patch(patch_from_polygon(polygon, fc=self.color_map[layer_name], alpha=alpha,
+                                               label=label))
 
     def _render_line_layer(self, ax: Axes, layer_name: str, alpha: float, tokens: List[str] = None) -> None:
         """

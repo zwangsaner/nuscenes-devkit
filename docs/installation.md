@@ -114,6 +114,28 @@ If you want to install these requirements nevertheless, please run the following
 pip install -r setup/requirements/requirements_prediction.txt
 ``` 
 
+To install all dependencies, including both prediction and tracking, use:
+```
+python -m pip install -r setup/requirements_all.txt
+```
+
+The dependencies now require NumPy 2.x. Use a fresh virtual environment when upgrading
+so that compiled dependencies are installed together with compatible NumPy wheels.
+Python 3.9 and Python 3.12 have separate Linux lock files because newer releases of
+some dependencies no longer support Python 3.9. To reproduce the dependency versions
+used by CI, install the lock file matching your Python version, for example:
+```
+python -m pip install -r setup/requirements_3_12_lock.txt
+python -m pip check
+```
+
+Both lock files include the optional prediction and tracking dependencies. Regenerate
+them from `setup/requirements_all.txt` with [uv](https://docs.astral.sh/uv/):
+```
+uv pip compile --upgrade --prerelease disallow --python-version 3.9 --python-platform x86_64-unknown-linux-gnu --no-build --output-file setup/requirements_3_9_lock.txt setup/requirements_all.txt
+uv pip compile --upgrade --prerelease disallow --python-version 3.12 --python-platform x86_64-unknown-linux-gnu --no-build --output-file setup/requirements_3_12_lock.txt setup/requirements_all.txt
+```
+
 ## Setup environment variable
 Finally, if you want to run the unit tests you need to point the devkit to the `nuscenes` folder on your disk.
 Set the NUSCENES environment variable to point to your data folder:

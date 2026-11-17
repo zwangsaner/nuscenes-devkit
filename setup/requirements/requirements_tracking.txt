@@ -1,2 +1,2 @@
 motmetrics==1.4.0
-pandas>=0.24
+pandas>=2.3.3,<4

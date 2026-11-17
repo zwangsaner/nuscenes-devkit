@@ -120,7 +120,7 @@ def generate_panoptic_labels(nusc: NuScenes,
             overlaps += msk
 
         stuff_msk = np.logical_and(panop_labels == 0, lidar_seg.labels >= STUFF_START_COARSE_CLASS_ID)
-        panop_labels[stuff_msk] = lidar_seg.labels[stuff_msk] * 1000
+        panop_labels[stuff_msk] = lidar_seg.labels[stuff_msk].astype(np.uint16) * 1000
         panoptic_file = sd_record['token'] + '_panoptic.npz'
         np.savez_compressed(os.path.join(panoptic_dir, panoptic_file), data=panop_labels.astype(np.uint16))
 
